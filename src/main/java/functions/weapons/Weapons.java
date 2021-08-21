@@ -40,7 +40,7 @@ public enum Weapons {
     WINFIELD_TALON(generateWeaponName(ParentWeapon.WINFIELD, Version.TALON), ""),
     WINFIELD_C(ParentWeapon.WINFIELD_C, ""),
     WINFIELD_C_MARKSMAN(generateWeaponName(ParentWeapon.WINFIELD_C, Version.MARKSMAN), ""),
-    WINFIELD_C_SILENCER(generateWeaponName(ParentWeapon.WINFIELD_C, Version.SILENCER), ""),
+    WINFIELD_C_SILENCER(generateWeaponName(ParentWeapon.WINFIELD_C, Version.SILENCER), "Silenced Winfield", "Silenced Winnie"),
     WINFIELD_CENTENNIAL(ParentWeapon.WINFIELD_CENTENNIAL, ""),
     WINFIELD_CENTENNIAL_SNIPER(generateWeaponName(ParentWeapon.WINFIELD_CENTENNIAL, Version.SNIPER), ""),
 

@@ -6,8 +6,16 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.Compression;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.jetbrains.annotations.NotNull;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
@@ -28,6 +36,12 @@ public class Bot extends ListenerAdapter {
 
         builder.addEventListeners(new Bot());
 
+        try {
+            fetchWeaponDetails();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         JDA jda = builder.build();
     }
 
@@ -47,6 +61,24 @@ public class Bot extends ListenerAdapter {
                 }
             }
         }
+    }
+
+    private static void fetchWeaponDetails() throws IOException {
+        Document weaponsPage = Jsoup.connect("https://huntshowdown.fandom.com/wiki/Weapons").get();
+        Elements tables = weaponsPage.body().select("tbody");
+
+        Element bigTable = tables.get(0);
+        Element middleTable = tables.get(1);
+        Element smallTable = tables.get(2);
+
+        List<Element> weaponsTable = Arrays.asList(bigTable, middleTable, smallTable);
+        
+        for (Element tr : weaponsTable) {
+            if (tr.child(0).attr("rowspan").equals("4")) {
+                System.out.println(tr.child(1).child(0).text() + " | " + tr.child(7).text() + " | " + tr.child(9).text());
+            }
+        }
+
     }
 
     private boolean isBotMessage(MessageReceivedEvent e) {
