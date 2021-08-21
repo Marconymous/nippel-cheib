@@ -1,3 +1,5 @@
+import functions.weapons.Weapon;
+import functions.weapons.Weapons;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -14,15 +16,18 @@ import org.jsoup.select.Elements;
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
     public final static String PREFIX = "--";
-
+    public List<Weapon> weapons;
 
     public static void main(String[] args) throws LoginException {
+        new Bot().run(args);
+    }
+
+    public void run(String[] args) throws LoginException {
         if (args.length < 1) {
             System.err.println("Please enter the API Key as an arg!");
             return;
@@ -41,6 +46,7 @@ public class Bot extends ListenerAdapter {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        checkWeapons();
 
         JDA jda = builder.build();
     }
@@ -63,7 +69,7 @@ public class Bot extends ListenerAdapter {
         }
     }
 
-    private static void fetchWeaponDetails() throws IOException {
+    private void fetchWeaponDetails() throws IOException {
         Document weaponsPage = Jsoup.connect("https://huntshowdown.fandom.com/wiki/Weapons").get();
         Elements tables = weaponsPage.body().select("tbody");
 
@@ -71,14 +77,44 @@ public class Bot extends ListenerAdapter {
         Element middleTable = tables.get(1);
         Element smallTable = tables.get(2);
 
-        List<Element> weaponsTable = Arrays.asList(bigTable, middleTable, smallTable);
-        
-        for (Element tr : weaponsTable) {
+        List<Element> weaponsTable = new ArrayList<>();
+        weaponsTable.addAll(bigTable.children());
+        weaponsTable.addAll(middleTable.children());
+        weaponsTable.addAll(smallTable.children());
+
+        List<Weapon> weapons = new ArrayList<>();
+        for (int i = 0; i < weaponsTable.size(); i++) {
+            Element tr = weaponsTable.get(i);
+            Element rofHandling = (i + 1 < weaponsTable.size()) ? weaponsTable.get(i + 1) : null;
+            Element rSpeedVelocity = (i + 2 < weaponsTable.size()) ? weaponsTable.get(i + 2) : null;
+            Element meleeTr = (i + 3 < weaponsTable.size()) ? weaponsTable.get(i + 3) : null;
+            if (rofHandling == null || rSpeedVelocity == null || meleeTr == null) continue;
+
             if (tr.child(0).attr("rowspan").equals("4")) {
-                System.out.println(tr.child(1).child(0).text() + " | " + tr.child(7).text() + " | " + tr.child(9).text());
+                String name = tr.child(1).child(0).text();
+                String damage = tr.child(7).text();
+                String range = tr.child(9).text();
+                String rateOfFire = rofHandling.child(1).text();
+                String handling = rofHandling.child(3).text();
+                String reloadSpeed = rSpeedVelocity.child(1).text();
+                String muzzleVelocity = rSpeedVelocity.child(3).text();
+                String melee = meleeTr.child(1).text();
+                String heavyMelee = meleeTr.child(3).text();
+
+                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name)));
             }
         }
+        this.weapons = weapons;
 
+        System.out.println(this.weapons);
+    }
+
+    private void checkWeapons() {
+        for (Weapon w : this.weapons) {
+            if (w.getEnumConstant() == null) {
+                System.err.println(w.getName() + " has no EnumConstant");
+            }
+        }
     }
 
     private boolean isBotMessage(MessageReceivedEvent e) {

@@ -100,6 +100,13 @@ public enum Weapons {
         return aliases;
     }
 
+    public static Weapons selectByFullName(String name) {
+        for (Weapons w : values()) {
+            if (w.fullName.equals(name)) return w;
+        }
+        return null;
+    }
+
     private static String generateWeaponName(String ... strings) {
         return String.join(" ", strings);
     }
