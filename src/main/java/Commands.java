@@ -1,10 +1,13 @@
 import functions.weapons.Weapons;
 import handlers.CommandHandler;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.internal.requests.Route;
 import utils.EventUtils;
 import utils.StringCompare;
 import utils.Tuple;
 
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,7 +18,7 @@ public enum Commands {
             event -> {
                 event.getChannel().sendMessage("--pong").queue();
             },
-            "ping"
+            false, "Ping the Bot", "ping"
     ),
 
     FETCH(
@@ -36,7 +39,7 @@ public enum Commands {
                 }
 
                 event.getChannel().sendMessage(message).queue();
-            }, "fetch"
+            }, false, "Fetch the Content of a Website!", "fetch"
     ),
 
     WEAPON(
@@ -57,13 +60,38 @@ public enum Commands {
                 }
 
                 event.getChannel().sendMessage(best.getVal1().getFullName()).queue();
-            }, "weapon"
+            }, false, "Get Infos about a Weapon from Hunt: Showdown", "weapon"
+    ),
+
+    COMMANDS(
+            event -> {
+                EmbedBuilder builder = new EmbedBuilder();
+
+                builder.setTitle("Commands", null);
+                builder.setColor(Color.BLACK);
+                builder.setDescription("All Commands");
+                for (Commands cmd : Commands.list()) {
+                    if (!cmd.isHidden) {
+                        builder.addField(Bot.PREFIX + cmd.toString().toLowerCase(), cmd.description, true);
+                        builder.addField("Aliases", String.join(", ", cmd.aliases), true);
+                        builder.addBlankField(false);
+                    }
+                }
+
+                event.getChannel().sendMessage(builder.build()).queue(msg -> msg.addReaction("U+2139").queue());
+            },
+            false,
+            "Lists all available Commands", "cmds", "commands", "help"
     );
 
     private final String[] aliases;
     private final CommandHandler handler;
+    private final boolean isHidden;
+    private final String description;
 
-    Commands(CommandHandler handler, String... aliases) {
+    Commands(CommandHandler handler, boolean isHidden, String description, String... aliases) {
+        this.isHidden = isHidden;
+        this.description = description;
         this.aliases = aliases;
         this.handler = handler;
     }
@@ -83,5 +111,13 @@ public enum Commands {
             commands = Commands.values();
         }
         return commands;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

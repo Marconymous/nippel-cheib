@@ -23,7 +23,7 @@ public enum Weapons {
     ROMERO(ParentWeapon.ROMERO, ""),
     ROMERO_TALON(generateWeaponName(ParentWeapon.ROMERO, Version.TALON), ""),
     SPARKS_LRR(ParentWeapon.SPARKS_LRR, ""),
-    SPARKS_LRR_SILENCER(generateWeaponName(ParentWeapon.SPARKS_LRR, Version.SILENCER), ""),
+    SPARKS_LRR_SILENCER(generateWeaponName(ParentWeapon.SPARKS_LRR, Version.SILENCER), "Silenced Sparks"),
     SPARKS_LRR_SNIPER(generateWeaponName(ParentWeapon.SPARKS_LRR, Version.SNIPER), ""),
     SPECTER(ParentWeapon.SPECTER, ""),
     SPECTER_BAYONET(generateWeaponName(ParentWeapon.SPECTER, Version.BAYONET), ""),
@@ -81,7 +81,7 @@ public enum Weapons {
     NAGANT(ParentWeapon.NAGANT),
     NAGANT_OFFICER(generateWeaponName(ParentWeapon.NAGANT, Version.OFFICER)),
     NAGANT_OFFICER_BRAWLER(generateWeaponName(ParentWeapon.NAGANT, Version.OFFICER, Version.BRAWLER)),
-    NAGANT_SILENCER(generateWeaponName(ParentWeapon.NAGANT, Version.SILENCER));
+    NAGANT_SILENCER(generateWeaponName(ParentWeapon.NAGANT, Version.SILENCER), "Silenced Nagant");
 
     private final String fullName;
     private final String[] aliases;

@@ -11,7 +11,7 @@ import javax.security.auth.login.LoginException;
 import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
-    private final static String prefix = "--";
+    public final static String PREFIX = "--";
 
 
     public static void main(String[] args) throws LoginException {
@@ -41,7 +41,7 @@ public class Bot extends ListenerAdapter {
         commandLoop:
         for (Commands cmd : Commands.list()) {
             for (String alias : cmd.getAliases()) {
-                if (inputCmd.equalsIgnoreCase(prefix + alias)) {
+                if (inputCmd.equalsIgnoreCase(PREFIX + alias)) {
                     cmd.handle(event);
                     break commandLoop;
                 }
