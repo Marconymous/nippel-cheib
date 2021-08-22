@@ -4,6 +4,9 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.Iterator;
 
 public class Weapon {
     private final String name;
@@ -73,8 +76,16 @@ public class Weapon {
     public MessageEmbed buildEmbed() {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(name, null);
-        builder.setColor(Color.GRAY);
-        
+        builder.setColor(new Color(0x751010));
+        builder.setDescription("Weapon Stats: " + name);
+        builder.addBlankField(false);
+
+        builder.addField("Damage", damage, true);
+        builder.addBlankField(true);
+        builder.addField("Range", range, true);
+        builder.
+
+
         return builder.build();
     }
 
