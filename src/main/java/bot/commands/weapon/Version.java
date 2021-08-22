@@ -1,6 +1,6 @@
-package functions.weapons;
+package bot.commands.weapon;
 
-public class Version {
+public final class Version {
     public static final String SNIPER = "Sniper";
     public static final String MARKSMAN = "Marksman";
     public static final String DEADEYE = "Deadeye";

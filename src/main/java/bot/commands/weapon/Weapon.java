@@ -1,13 +1,8 @@
-package functions.weapons;
+package bot.commands.weapon;
 
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import bot.utils.Utils;
 
-import java.awt.*;
-import java.util.Arrays;
-import java.util.Iterator;
-
-public class Weapon {
+public final class Weapon {
     private final String name;
     private final String damage;
     private final String range;
@@ -20,16 +15,17 @@ public class Weapon {
     private final Weapons enumConstant;
     private final String imageUrl;
 
+    // TODO: 8/22/2021 Add Price
     public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant, String imageUrl) {
         this.name = name;
-        this.damage = damage;
-        this.range = range;
-        this.rateOfFire = rateOfFire;
-        this.handling = handling;
-        this.reloadSpeed = reloadSpeed;
-        this.muzzleVelocity = muzzleVelocity;
-        this.meleeDamage = meleeDamage;
-        this.heavyMeleeDamage = heavyMeleeDamage;
+        this.damage = Utils.covertToCode(damage);
+        this.range = Utils.covertToCode(range);
+        this.rateOfFire = Utils.covertToCode(rateOfFire);
+        this.handling = Utils.covertToCode(handling);
+        this.reloadSpeed = Utils.covertToCode(reloadSpeed);
+        this.muzzleVelocity = Utils.covertToCode(muzzleVelocity);
+        this.meleeDamage = Utils.covertToCode(meleeDamage);
+        this.heavyMeleeDamage = Utils.covertToCode(heavyMeleeDamage);
         this.enumConstant = enumConstant;
         this.imageUrl = imageUrl;
     }
@@ -76,33 +72,6 @@ public class Weapon {
 
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public MessageEmbed buildEmbed() {
-        EmbedBuilder builder = new EmbedBuilder();
-        builder.setTitle(name, null);
-        builder.setColor(new Color(0x751010));
-        builder.setDescription("Weapon Stats: " + name);
-
-        builder.addField("Damage", damage, true);
-        builder.addBlankField(true);
-        builder.addField("Range", range, true);
-
-        builder.addField("Rate of Fire", rateOfFire, true);
-        builder.addBlankField(true);
-        builder.addField("Handling", handling, true);
-
-        builder.addField("Reload Speed", reloadSpeed, true);
-        builder.addBlankField(true);
-        builder.addField("Muzzle Velocity", muzzleVelocity, true);
-
-        builder.addField("Melee Damage", meleeDamage, true);
-        builder.addBlankField(true);
-        builder.addField("Heavy Melee Damage", heavyMeleeDamage, true);
-
-        builder.setImage(imageUrl);
-
-        return builder.build();
     }
 
     @Override

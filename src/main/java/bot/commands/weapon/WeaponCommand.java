@@ -1,70 +1,63 @@
-import functions.weapons.Weapon;
-import functions.weapons.Weapons;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
+package bot.commands.weapon;
+
+import bot.commands.Command;
+import bot.utils.EventUtils;
+import bot.utils.StringCompare;
+import bot.utils.Tuple;
+import bot.utils.Utils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.utils.Compression;
-import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import utils.Variables;
 
-import javax.security.auth.login.LoginException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-public class Bot extends ListenerAdapter {
-    public final static String PREFIX = "--";
-
-    public static void main(String[] args) throws LoginException {
-        new Bot().run(args);
-    }
-
-    public void run(String[] args) throws LoginException {
-        if (args.length < 1) {
-            System.err.println("Please enter the API Key as an arg!");
-            return;
-        }
-
-        JDABuilder builder = JDABuilder.createDefault(args[0]);
-        builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
-        builder.setBulkDeleteSplittingEnabled(false);
-        builder.setCompression(Compression.NONE);
-        builder.setActivity(Activity.competing("a 1v1 against your mom"));
-
-        builder.addEventListeners(new Bot());
-
+public final class WeaponCommand extends Command {
+    public WeaponCommand() {
+        super(false, "weapon", "Displays information about a Weapon from Hunt: Showdown!", "!");
         try {
             fetchWeaponDetails();
         } catch (IOException e) {
             e.printStackTrace();
         }
         checkWeapons();
-
-        JDA jda = builder.build();
     }
 
     @Override
-    public void onMessageReceived(@NotNull MessageReceivedEvent event) {
-        if (isBotMessage(event)) return;
+    public void handle(MessageReceivedEvent event) {
+        String cmd = EventUtils.spitRawContent(event)[0];
+        String weapon = EventUtils.rawContent(event).replace(cmd + " ", "");
+        System.out.println(weapon);
 
-        String inputCmd = event.getMessage().getContentRaw().split("\\s")[0];
-        System.out.println("inputCmd = " + inputCmd);
+        Tuple<Weapons, Float> best = new Tuple<>(null, (float) 0);
+        for (Weapons w : Weapons.values()) {
+            float val = StringCompare.levenshtein(weapon, w.getFullName());
+            for (String s : w.getAliases()) {
+                val = Math.max(StringCompare.levenshtein(weapon, s), val);
+            }
+            if (val > best.getY()) best = new Tuple<>(w, val);
+            if (val == 1) break;
+        }
 
-        commandLoop:
-        for (Commands cmd : Commands.list()) {
-            for (String alias : cmd.getAliases()) {
-                if (inputCmd.equalsIgnoreCase(PREFIX + alias)) {
-                    cmd.handle(event);
-                    break commandLoop;
-                }
+        Weapon finalWeapon = null;
+        for (Weapon w : Utils.getWeapons()) {
+            if (w.getEnumConstant() == best.getX()){
+                finalWeapon = w;
+                break;
+            }
+        }
+
+        assert finalWeapon != null;
+        event.getChannel().sendMessage(WeaponUtils.buildWeaponEmbed(finalWeapon)).queue();
+    }
+
+    private void checkWeapons() {
+        for (Weapon w : Utils.getWeapons()) {
+            if (w.getEnumConstant() == null) {
+                System.err.println(w.getName() + " has no EnumConstant");
             }
         }
     }
@@ -113,18 +106,6 @@ public class Bot extends ListenerAdapter {
             }
         }
 
-        Variables.setWeapons(weapons);
-    }
-
-    private void checkWeapons() {
-        for (Weapon w : Variables.getWeapons()) {
-            if (w.getEnumConstant() == null) {
-                System.err.println(w.getName() + " has no EnumConstant");
-            }
-        }
-    }
-
-    private boolean isBotMessage(MessageReceivedEvent e) {
-        return Objects.requireNonNull(e.getMember()).getUser().isBot();
+        Utils.setWeapons(weapons);
     }
 }

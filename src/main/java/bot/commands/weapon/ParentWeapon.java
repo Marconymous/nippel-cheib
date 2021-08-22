@@ -1,6 +1,6 @@
-package functions.weapons;
+package bot.commands.weapon;
 
-public class ParentWeapon {
+public final class ParentWeapon {
     public static final String NAGANT = "Nagant M1895";
 
     public static final String LEBEL = "Lebel 1886";

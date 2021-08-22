@@ -1,6 +1,8 @@
-package functions.weapons;
+package bot.commands.weapon;
 
 public enum Weapons {
+    // TODO: 8/22/2021 add slot category
+
     // 3 Slot Weapons
     BOMB_LANCE(ParentWeapon.BOMB_LANCE, ""),
     CALDWELL_RIVAL(ParentWeapon.CALDWELL_RIVAL, ""),

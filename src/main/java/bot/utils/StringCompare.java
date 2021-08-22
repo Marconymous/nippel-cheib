@@ -1,4 +1,4 @@
-package utils;
+package bot.utils;
 
 import java.security.InvalidParameterException;
 import java.util.Arrays;
