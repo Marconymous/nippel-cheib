@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 import java.awt.*;
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -19,8 +18,9 @@ public class Weapon {
     private final String meleeDamage;
     private final String heavyMeleeDamage;
     private final Weapons enumConstant;
+    private final String imageUrl;
 
-    public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant) {
+    public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant, String imageUrl) {
         this.name = name;
         this.damage = damage;
         this.range = range;
@@ -31,6 +31,7 @@ public class Weapon {
         this.meleeDamage = meleeDamage;
         this.heavyMeleeDamage = heavyMeleeDamage;
         this.enumConstant = enumConstant;
+        this.imageUrl = imageUrl;
     }
 
     public String getName() {
@@ -73,18 +74,33 @@ public class Weapon {
         return enumConstant;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
     public MessageEmbed buildEmbed() {
         EmbedBuilder builder = new EmbedBuilder();
         builder.setTitle(name, null);
         builder.setColor(new Color(0x751010));
         builder.setDescription("Weapon Stats: " + name);
-        builder.addBlankField(false);
 
         builder.addField("Damage", damage, true);
         builder.addBlankField(true);
         builder.addField("Range", range, true);
-        builder.
 
+        builder.addField("Rate of Fire", rateOfFire, true);
+        builder.addBlankField(true);
+        builder.addField("Handling", handling, true);
+
+        builder.addField("Reload Speed", reloadSpeed, true);
+        builder.addBlankField(true);
+        builder.addField("Muzzle Velocity", muzzleVelocity, true);
+
+        builder.addField("Melee Damage", meleeDamage, true);
+        builder.addBlankField(true);
+        builder.addField("Heavy Melee Damage", heavyMeleeDamage, true);
+
+        builder.setImage(imageUrl);
 
         return builder.build();
     }

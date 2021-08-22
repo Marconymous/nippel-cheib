@@ -12,6 +12,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import utils.Variables;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -21,7 +22,6 @@ import java.util.Objects;
 
 public class Bot extends ListenerAdapter {
     public final static String PREFIX = "--";
-    public List<Weapon> weapons;
 
     public static void main(String[] args) throws LoginException {
         new Bot().run(args);
@@ -101,16 +101,23 @@ public class Bot extends ListenerAdapter {
                 String melee = meleeTr.child(1).text();
                 String heavyMelee = meleeTr.child(3).text();
 
-                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name)));
+                String imageUrl = (
+                        tr.child(0).child(0).child(0).child(0).attr("data-src").equals("")
+                )
+                        ? tr.child(0).child(0).child(0).child(0).attr("src")
+                        : tr.child(0).child(0).child(0).child(0).attr("data-src");
+
+                System.out.println(imageUrl);
+
+                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name), imageUrl));
             }
         }
-        this.weapons = weapons;
 
-        System.out.println(this.weapons);
+        Variables.setWeapons(weapons);
     }
 
     private void checkWeapons() {
-        for (Weapon w : this.weapons) {
+        for (Weapon w : Variables.getWeapons()) {
             if (w.getEnumConstant() == null) {
                 System.err.println(w.getName() + " has no EnumConstant");
             }

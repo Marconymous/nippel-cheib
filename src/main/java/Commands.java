@@ -1,3 +1,4 @@
+import functions.weapons.Weapon;
 import functions.weapons.Weapons;
 import handlers.CommandHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -6,6 +7,7 @@ import net.dv8tion.jda.internal.requests.Route;
 import utils.EventUtils;
 import utils.StringCompare;
 import utils.Tuple;
+import utils.Variables;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -59,7 +61,16 @@ public enum Commands {
                     if (val == 1) break;
                 }
 
-                event.getChannel().sendMessage(best.getVal1().getFullName()).queue();
+                Weapon finalWeapon = null;
+                for (Weapon w : Variables.getWeapons()) {
+                    if (w.getEnumConstant() == best.getVal1()){
+                        finalWeapon = w;
+                        break;
+                    }
+                }
+
+                assert finalWeapon != null;
+                event.getChannel().sendMessage(finalWeapon.buildEmbed()).queue();
             }, false, "Get Infos about a Weapon from Hunt: Showdown", "weapon"
     ),
 
