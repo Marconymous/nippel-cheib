@@ -5,6 +5,8 @@ import bot.commands.Command;
 import bot.commands.CommandLister;
 import bot.commands.ping.PingCommand;
 import bot.commands.weapon.WeaponCommand;
+import bot.utils.EventUtils;
+import bot.utils.Utils;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -52,6 +54,8 @@ public class Bot extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (isBotMessage(event)) return;
+
+        if (!EventUtils.rawContent(event).substring(0, PREFIX.length()).equalsIgnoreCase(PREFIX)) return;
 
         String inputCmd = event.getMessage().getContentRaw().split("\\s")[0];
         System.out.println("inputCmd = " + inputCmd);
