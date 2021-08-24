@@ -93,6 +93,9 @@ public final class WeaponCommand extends Command {
                 String muzzleVelocity = rSpeedVelocity.child(3).text();
                 String melee = meleeTr.child(1).text();
                 String heavyMelee = meleeTr.child(3).text();
+                String price = tr.child(2).text();
+                String capacity = tr.child(5).text();
+                String ammo = tr.child(4).text();
 
                 String imageUrl = (
                         tr.child(0).child(0).child(0).child(0).attr("data-src").equals("")
@@ -102,7 +105,7 @@ public final class WeaponCommand extends Command {
 
                 System.out.println(imageUrl);
 
-                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name), imageUrl));
+                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name), imageUrl, price, capacity, ammo));
             }
         }
 

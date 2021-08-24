@@ -19,7 +19,7 @@ public class Utils {
         return null;
     }
 
-    public static String covertToCode(String s) {
+    public static String convertToCode(String s) {
         return "```" + s + "```";
     }
 
