@@ -1,6 +1,7 @@
 package bot.commands;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class Command {
     private final boolean isHidden;
@@ -15,7 +16,7 @@ public abstract class Command {
         this.aliases = aliases;
     }
 
-    public abstract void handle(MessageReceivedEvent event);
+    public abstract void handle(@NotNull MessageReceivedEvent event);
 
     public boolean isHidden() {
         return isHidden;

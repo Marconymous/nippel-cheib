@@ -8,6 +8,7 @@ import java.awt.Color;
 public final class WeaponUtils {
     public static MessageEmbed buildWeaponEmbed(Weapon w) {
         EmbedBuilder builder = new EmbedBuilder();
+
         builder.setTitle(w.getName(), null);
         builder.setColor(new Color(0x751010));
         builder.setDescription("Weapon Stats: " + w.getName());
