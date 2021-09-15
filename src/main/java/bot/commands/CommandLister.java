@@ -3,6 +3,7 @@ package bot.commands;
 import bot.Bot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -12,7 +13,7 @@ public final class CommandLister extends Command{
     }
 
     @Override
-    public void handle(MessageReceivedEvent event) {
+    public void handle(@NotNull MessageReceivedEvent event) {
         EmbedBuilder builder = new EmbedBuilder();
 
         builder.setTitle("Commands", null);

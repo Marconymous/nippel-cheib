@@ -6,12 +6,14 @@ import bot.utils.StringCompare;
 import bot.utils.Tuple;
 import bot.utils.Utils;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,14 +22,15 @@ public final class WeaponCommand extends Command {
         super(false, "weapon", "Displays information about a Weapon from Hunt: Showdown!", "!");
         try {
             fetchWeaponDetails();
-        } catch (IOException e) {
+            Utils.getWeapons().add(new Weapon("TestWeapon", null, null, null, null, null,null,null,null,null,null,null,null,null));
+            checkWeapons();
+        } catch (IOException | IllegalAccessException e) {
             e.printStackTrace();
         }
-        checkWeapons();
     }
 
     @Override
-    public void handle(MessageReceivedEvent event) {
+    public void handle(@NotNull MessageReceivedEvent event) {
         String cmd = EventUtils.spitRawContent(event)[0];
         String weapon = EventUtils.rawContent(event).replace(cmd + " ", "");
         System.out.println(weapon);
@@ -54,10 +57,14 @@ public final class WeaponCommand extends Command {
         event.getChannel().sendMessage(WeaponUtils.buildWeaponEmbed(finalWeapon)).queue();
     }
 
-    private void checkWeapons() {
+    private void checkWeapons() throws IllegalAccessException {
         for (Weapon w : Utils.getWeapons()) {
-            if (w.getEnumConstant() == null) {
-                System.err.println(w.getName() + " has no EnumConstant");
+
+            for (Field f : Weapon.class.getDeclaredFields()) {
+                f.setAccessible(true);
+                if (f.get(w) == null) {
+                    System.err.println(f.getName() + " is null on -> " + w.getName());
+                }
             }
         }
     }
@@ -93,6 +100,9 @@ public final class WeaponCommand extends Command {
                 String muzzleVelocity = rSpeedVelocity.child(3).text();
                 String melee = meleeTr.child(1).text();
                 String heavyMelee = meleeTr.child(3).text();
+                String price = tr.child(2).text();
+                String capacity = tr.child(5).text();
+                String ammo = tr.child(4).text();
 
                 String imageUrl = (
                         tr.child(0).child(0).child(0).child(0).attr("data-src").equals("")
@@ -100,9 +110,7 @@ public final class WeaponCommand extends Command {
                         ? tr.child(0).child(0).child(0).child(0).attr("src")
                         : tr.child(0).child(0).child(0).child(0).attr("data-src");
 
-                System.out.println(imageUrl);
-
-                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name), imageUrl));
+                weapons.add(new Weapon(name, damage, range, rateOfFire, handling, reloadSpeed, muzzleVelocity, melee, heavyMelee, Weapons.selectByFullName(name), imageUrl, price, capacity, ammo));
             }
         }
 

@@ -14,20 +14,27 @@ public final class Weapon {
     private final String heavyMeleeDamage;
     private final Weapons enumConstant;
     private final String imageUrl;
+    private final String price;
+    private final String capacity;
+    private final String ammo;
+    private final String slotCategory;
 
     // TODO: 8/22/2021 Add Price
-    public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant, String imageUrl) {
+    public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant, String imageUrl, String price, String capacity, String ammo) {
         this.name = name;
-        this.damage = Utils.covertToCode(damage);
-        this.range = Utils.covertToCode(range);
-        this.rateOfFire = Utils.covertToCode(rateOfFire);
-        this.handling = Utils.covertToCode(handling);
-        this.reloadSpeed = Utils.covertToCode(reloadSpeed);
-        this.muzzleVelocity = Utils.covertToCode(muzzleVelocity);
-        this.meleeDamage = Utils.covertToCode(meleeDamage);
-        this.heavyMeleeDamage = Utils.covertToCode(heavyMeleeDamage);
+        this.damage = Utils.convertToCode(damage);
+        this.range = Utils.convertToCode(range);
+        this.rateOfFire = Utils.convertToCode(rateOfFire);
+        this.handling = Utils.convertToCode(handling);
+        this.reloadSpeed = Utils.convertToCode(reloadSpeed);
+        this.muzzleVelocity = Utils.convertToCode(muzzleVelocity);
+        this.meleeDamage = Utils.convertToCode(meleeDamage);
+        this.heavyMeleeDamage = Utils.convertToCode(heavyMeleeDamage);
         this.enumConstant = enumConstant;
         this.imageUrl = imageUrl;
+        this.price = Utils.convertToCode(price);
+        this.capacity = Utils.convertToCode(capacity);
+        this.ammo = Utils.convertToCode(ammo);
     }
 
     public String getName() {
@@ -72,6 +79,18 @@ public final class Weapon {
 
     public String getImageUrl() {
         return imageUrl;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public String getCapacity() {
+        return capacity;
+    }
+
+    public String getAmmo() {
+        return ammo;
     }
 
     @Override

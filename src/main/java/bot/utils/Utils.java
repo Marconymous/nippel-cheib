@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Utils {
     private static List<Weapon> weapons;
 
-    public static File getFile(String name) {
+    public static File getFileFromSystem(String name) {
         try {
             return new File(Objects.requireNonNull(Utils.class.getClassLoader().getResource(name)).toURI());
         } catch (URISyntaxException e) {
@@ -19,8 +19,8 @@ public class Utils {
         return null;
     }
 
-    public static String covertToCode(String s) {
-        return "```" + s + "```";
+    public static String convertToCode(String s) {
+        return (s == null || s.equals("")) ? null : "```" + s + "```";
     }
 
     public static List<Weapon> getWeapons() {

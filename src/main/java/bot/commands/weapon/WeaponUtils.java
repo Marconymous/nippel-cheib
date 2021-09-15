@@ -8,25 +8,26 @@ import java.awt.Color;
 public final class WeaponUtils {
     public static MessageEmbed buildWeaponEmbed(Weapon w) {
         EmbedBuilder builder = new EmbedBuilder();
+
         builder.setTitle(w.getName(), null);
         builder.setColor(new Color(0x751010));
         builder.setDescription("Weapon Stats: " + w.getName());
 
         builder.addField("Damage", w.getDamage(), true);
-        builder.addBlankField(true);
-        builder.addField("Range", w.getRange(), true);
+        builder.addField("Price", w.getPrice(), true);
+        builder.addField("Ammo", w.getAmmo(), true);
 
+        builder.addField("Range", w.getRange(), true);
         builder.addField("Rate of Fire", w.getRateOfFire(), true);
-        builder.addBlankField(true);
         builder.addField("Handling", w.getHandling(), true);
 
         builder.addField("Reload Speed", w.getReloadSpeed(), true);
-        builder.addBlankField(true);
         builder.addField("Muzzle Velocity", w.getMuzzleVelocity(), true);
-
         builder.addField("Melee Damage", w.getMeleeDamage(), true);
-        builder.addBlankField(true);
+
         builder.addField("Heavy Melee Damage", w.getHeavyMeleeDamage(), true);
+        builder.addField("Capacity", w.getCapacity(), true);
+        builder.addBlankField(true);
 
         builder.setImage(w.getImageUrl());
 
