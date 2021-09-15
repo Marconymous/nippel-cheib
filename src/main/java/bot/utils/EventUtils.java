@@ -10,4 +10,8 @@ public final class EventUtils {
     public static String[] spitRawContent(MessageReceivedEvent event) {
         return rawContent(event).split("\\s");
     }
+
+    public static void sendMessageToChannel(MessageReceivedEvent event, String msg) {
+        event.getChannel().sendMessage(msg).queue();
+    }
 }

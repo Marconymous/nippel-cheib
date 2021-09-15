@@ -9,7 +9,7 @@ public final class BotCommands {
         return commands;
     }
 
-    public static boolean register(Command command) {
-        return commands.add(command);
+    public static void register(Command command) {
+        commands.add(command);
     }
 }

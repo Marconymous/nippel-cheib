@@ -4,6 +4,7 @@ import bot.commands.BotCommands;
 import bot.commands.Command;
 import bot.commands.CommandLister;
 import bot.commands.ping.PingCommand;
+import bot.commands.vc.play.MusicPlayer;
 import bot.commands.weapon.WeaponCommand;
 import bot.utils.EventUtils;
 import bot.utils.Utils;
@@ -33,7 +34,7 @@ public class Bot extends ListenerAdapter {
         }
 
         JDABuilder builder = JDABuilder.createDefault(args[0]);
-        builder.disableCache(CacheFlag.MEMBER_OVERRIDES, CacheFlag.VOICE_STATE);
+        builder.disableCache(CacheFlag.MEMBER_OVERRIDES);
         builder.setBulkDeleteSplittingEnabled(false);
         builder.setCompression(Compression.NONE);
         builder.setActivity(Activity.competing("a 1v1 against your mom"));
@@ -49,6 +50,7 @@ public class Bot extends ListenerAdapter {
         BotCommands.register(new WeaponCommand());
         BotCommands.register(new PingCommand());
         BotCommands.register(new CommandLister());
+        BotCommands.register(new MusicPlayer());
     }
 
     @Override
