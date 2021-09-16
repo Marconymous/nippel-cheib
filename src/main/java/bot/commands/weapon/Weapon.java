@@ -20,7 +20,7 @@ public final class Weapon {
     private final String slotCategory;
 
     // TODO: 8/22/2021 Add Price
-    public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant, String imageUrl, String price, String capacity, String ammo) {
+    public Weapon(String name, String damage, String range, String rateOfFire, String handling, String reloadSpeed, String muzzleVelocity, String meleeDamage, String heavyMeleeDamage, Weapons enumConstant, String imageUrl, String price, String capacity, String ammo, String slotCategory) {
         this.name = name;
         this.damage = Utils.convertToCode(damage);
         this.range = Utils.convertToCode(range);
@@ -35,6 +35,7 @@ public final class Weapon {
         this.price = Utils.convertToCode(price);
         this.capacity = Utils.convertToCode(capacity);
         this.ammo = Utils.convertToCode(ammo);
+        this.slotCategory = slotCategory;
     }
 
     public String getName() {

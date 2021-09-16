@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm' version '1.5.30'
 }
 
 group 'dev.marconymous'
@@ -11,6 +12,9 @@ repositories {
         name 'm2-dv8tion'
         url 'https://m2.dv8tion.net/releases'
     }
+
+    maven { url 'https://jitpack.io' }
+
 }
 
 dependencies {
@@ -19,8 +23,20 @@ dependencies {
     implementation("net.dv8tion:JDA:4.3.0_277")
     implementation('org.jsoup:jsoup:1.14.2')
     implementation 'com.sedmelluq:lavaplayer:1.3.77'
-    implementation 'com.discord4j:discord4j-core:3.2.0-RC3'}
+    compile "com.github.FredBoat:Lavalink-Client:f84b333518"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
 
 test {
     useJUnitPlatform()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }

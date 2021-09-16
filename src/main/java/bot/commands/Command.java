@@ -1,5 +1,6 @@
 package bot.commands;
 
+import bot.Bot;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -9,7 +10,7 @@ public abstract class Command {
     private final String description;
     private final String[] aliases;
 
-    public Command(boolean isHidden, String name, String description, String ... aliases) {
+    public Command(Bot bot, boolean isHidden, String name, String description, String ... aliases) {
         this.isHidden = isHidden;
         this.name = name;
         this.description = description;
