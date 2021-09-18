@@ -16,6 +16,7 @@ import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.events.StatusChangeEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.Compression
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 import java.net.URI
@@ -36,9 +37,11 @@ class Bot : ListenerAdapter() {
 
         AudioSourceManagers.registerRemoteSources(playerManager)
 
-        val builder = JDABuilder.createDefault(args[0])
+        val builder = JDABuilder.createDefault(
+            args[0], GatewayIntent.GUILD_MESSAGES,
+            GatewayIntent.GUILD_VOICE_STATES
+        )
         builder.disableCache(CacheFlag.MEMBER_OVERRIDES)
-        builder.setBulkDeleteSplittingEnabled(false)
         builder.setCompression(Compression.NONE)
         builder.setActivity(Activity.competing("a 1v1 against your mom"))
         builder.addEventListeners(Bot())
@@ -49,7 +52,7 @@ class Bot : ListenerAdapter() {
 
             override fun onReady(event: ReadyEvent) {
                 lavalink.setUserId(jda.selfUser.id)
-//                lavalink.addNode(URI("ws://localhost:2333"), "youshallnotpass")
+                lavalink.addNode(URI("ws://localhost:2333"), "")
             }
         }, lavalink)
         builder.setVoiceDispatchInterceptor(lavalink.voiceInterceptor)
@@ -90,6 +93,7 @@ class Bot : ListenerAdapter() {
 
     companion object {
         const val PREFIX = "--"
+
         @Throws(LoginException::class)
         @JvmStatic
         fun main(args: Array<String>) {

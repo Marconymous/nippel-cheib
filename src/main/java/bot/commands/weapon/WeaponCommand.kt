@@ -27,19 +27,19 @@ class WeaponCommand(bot: Bot) :
             if (`val` == 1f) break
         }
         var finalWeapon: Weapon? = null
-        for (w in Utils.getWeapons()) {
+        for (w in Utils.weapons) {
             if (w.enumConstant == best.x) {
                 finalWeapon = w
                 break
             }
         }
-        assert(finalWeapon != null)
-        event.channel.sendMessage(WeaponUtils.buildWeaponEmbed(finalWeapon)).queue()
+
+        event.channel.sendMessage(WeaponUtils.buildWeaponEmbed(finalWeapon!!)).queue()
     }
 
     @Throws(IllegalAccessException::class)
     private fun checkWeapons() {
-        for (w in Utils.getWeapons()) {
+        for (w in Utils.weapons) {
             for (f in Weapon::class.java.declaredFields) {
                 f.isAccessible = true
                 if (f[w] == null) {
@@ -104,13 +104,13 @@ class WeaponCommand(bot: Bot) :
                 )
             }
         }
-        Utils.setWeapons(weapons)
+        Utils.weapons = weapons as ArrayList<Weapon>
     }
 
     init {
         try {
             fetchWeaponDetails()
-            Utils.getWeapons().add(
+            Utils.weapons.add(
                 Weapon(
                     "TestWeapon",
                     null,
@@ -121,12 +121,12 @@ class WeaponCommand(bot: Bot) :
                     null,
                     null,
                     null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null
+                    Weapons.NONE,
+                    "",
+                    "",
+                    "",
+                    "",
+                    ""
                 )
             )
             checkWeapons()

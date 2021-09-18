@@ -14,10 +14,10 @@ import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import java.util.*
 
-class MusicPlayer(val bot: Bot) : Command(bot, false, "play", "Plays music etc..", "p") {
+class MusicPlayer(bot: Bot) : Command(bot, false, "play", "Plays music etc..", "p") {
     override fun handle(event: MessageReceivedEvent) {
         println("Handle Music Play")
-        if (event.author.isBot) return
+            if (event.author.isBot) return
 
         println("Before Voice State")
         val state = Objects.requireNonNull(event.member)!!.voiceState ?: return
